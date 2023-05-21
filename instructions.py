@@ -8,3 +8,8 @@ def demographic_profile(param):
     """
     return prompt
 
+def test():
+    prompt = f"""
+      Hi there this is a test only : say two words and the secnd is in newline.
+    """
+    return prompt

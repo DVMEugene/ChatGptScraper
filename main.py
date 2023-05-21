@@ -22,8 +22,9 @@ def user_input():
 
 def main():
     driver = chrome_config()
+    model = gpt_models()
     # navigating to a page
-    driver.get('https://chat.openai.com/?model=gpt-4')
+    driver.get(f'https://chat.openai.com/{model["gpt3.5"]}')
     xpath = xpaths()
 
     if driver.find_element(By.XPATH, xpath['textarea']):

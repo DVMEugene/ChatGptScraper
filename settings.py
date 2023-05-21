@@ -1,4 +1,5 @@
 import os
+import random
 import undetected_chromedriver as uc
 from dotenv import load_dotenv
 load_dotenv('./secrets/.env')
@@ -18,6 +19,13 @@ def xpaths():
         'login_submit': login_submit,
     }
     return xpath
+
+def gpt_models():
+    param = {
+        'gpt4': "?model=gpt-4",
+        'gpt3.5': "?model=3.5%20turbo"
+    }
+    return param
 
 def chrome_config():
     proxy_settings = proxies()
@@ -54,6 +62,13 @@ def chrome_config():
 
     return driver
 
+
+def randomize_port(existing_port):
+    new_port = random.randint(1024, 65535)
+    while new_port == existing_port:
+        new_port = random.randint(1024, 65535)
+    return new_port
+
 def proxies():
     # Configure the proxy server and port
     proxy_server = os.getenv("PROXY_SERVER")
@@ -62,6 +77,11 @@ def proxies():
     proxy_password = os.getenv("PROXY_PASSWORD")
     gpt_username = os.getenv("GPT_USERNAME")
     gpt_password = os.getenv("GPT_PASSWORD")
+
+    if proxy_port:
+        proxy_port = int(proxy_port)
+        proxy_port = randomize_port(proxy_port)
+        print(proxy_port)
 
     proxy_settings = {
         'proxy_server': proxy_server,
