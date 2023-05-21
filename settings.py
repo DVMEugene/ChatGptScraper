@@ -1,6 +1,8 @@
 import os
 import random
 import undetected_chromedriver as uc
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 load_dotenv('./secrets/.env')
 
@@ -40,7 +42,7 @@ def chrome_config():
     chrome_options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
     # Configure the proxy
     chrome_options.add_argument(
-        f"http://{proxy_settings['proxy_username']}:{proxy_settings['proxy_password']}@{proxy_settings['proxy_server']}:{proxy_settings['proxy_port']}"
+        f"https://{proxy_settings['proxy_username']}:{proxy_settings['proxy_password']}@{proxy_settings['proxy_server']}:{proxy_settings['proxy_port']}"
     )
     chrome_options.add_argument(
         f"http://{proxy_settings['proxy_username']}:{proxy_settings['proxy_password']}@{proxy_settings['proxy_server']}:{proxy_settings['proxy_port']}"
@@ -54,12 +56,32 @@ def chrome_config():
     }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    chrome_options.user_data_dir = "/Users/eugen/AppData/Local/Google/Chrome/User Data"
+    chrome_options.user_data_dir = "C:/Users/billi/AppData/Local/Google/Chrome/User Data"
 
     # service = Service(executable_path=chromedriver_filename)
 
     driver = uc.Chrome(options=chrome_options)
 
+    return driver
+
+
+def non_proxy():
+    chrome_options = Options()
+    chrome_options.add_argument('--no-first-run')
+    chrome_options.add_argument('--no-service-autorun')
+    chrome_options.add_argument('--password-store=basic')
+
+    prefs = {
+        "profile.default_content_setting_values.notifications": 2,  # Block all notifications
+        "profile.default_content_setting_values.popups": 2,  # Block all popups
+        "profile.default_content_settings.state.popups": 2,
+        "profile.default_content_setting_values.automatic_downloads": 1  # Allow automatic downloads
+    }
+    chrome_options.add_experimental_option("prefs", prefs)
+
+    chrome_options.add_argument("--user-data-dir=/Users/billi/AppData/Local/Google/Chrome/User Data")
+
+    driver = webdriver.Chrome(options=chrome_options)
     return driver
 
 

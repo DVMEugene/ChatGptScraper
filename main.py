@@ -10,6 +10,13 @@ from auth import auth
 from chat import chat
 
 import time
+import psutil
+
+def stop_chrome_processes():
+    for process in psutil.process_iter(['name']):
+        if process.info['name'] == 'chrome.exe':
+            process.kill()
+            print(f"Stopped process with PID {process.pid} - {process.info['name']}")
 
 def user_input():
     keyword = "facebook ads for real estate agents"
@@ -21,7 +28,8 @@ def user_input():
     return param
 
 def main():
-    driver = chrome_config()
+    driver = chrome_config()  # Proxy enabled
+    # driver = non_proxy()
     model = gpt_models()
     # navigating to a page
     driver.get(f'https://chat.openai.com/{model["gpt3.5"]}')
@@ -55,4 +63,5 @@ def main():
 
 
 if __name__ == "__main__":
+    stop_chrome_processes()  # if chrome driver not working run this
     main()
